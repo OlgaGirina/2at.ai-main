@@ -2,8 +2,7 @@ import { test as setup, expect } from '@playwright/test';
 
 setup('Authenticate and save state', async ({ page }) => {
   // 1️⃣ Открываем страницу логина
-  await page.goto('/auth/login');
-
+  await page.goto('/auth/');
   // 2️⃣ Вводим данные из .env
   await page.getByPlaceholder('Enter email')
     .fill(process.env.CLIENT_EMAIL!);
@@ -12,7 +11,7 @@ setup('Authenticate and save state', async ({ page }) => {
     .fill(process.env.CLIENT_PASSWORD!);
 
   await page.getByRole('button', { name: 'Sign in' }).click();
-
+  console.log("REAL URL:", page.url());  
   // 3️⃣ Проверяем, что логин успешен
   await expect(page).toHaveURL(/client/);
 

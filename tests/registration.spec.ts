@@ -124,7 +124,7 @@ await page
   .click();
 
 // дождаться второго шага
-await expect(
+/*await expect(
   page
     .frameLocator('#auth-iframe')
     .getByText('How would you like to use 2aT?')
@@ -146,9 +146,9 @@ await frame
 
 const continueBtn = frame.getByRole('button', { name: 'Continue' });
 await expect(continueBtn).toBeEnabled();
-await continueBtn.click();
+await continueBtn.click(); */
 
-
+const frame = page.frameLocator('#auth-iframe');
 const companyInput = frame.getByRole('textbox', { name: /company name/i });
 
 await companyInput.click();

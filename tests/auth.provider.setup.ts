@@ -1,24 +1,31 @@
 import { test as setup, expect } from '@playwright/test';
 
 setup('Authenticate and save state', async ({ page }) => {
-  // 1️⃣ Открываем страницу логина
-  await page.goto('/auth/login');
 
-  // 2️⃣ Вводим данные из .env
+  await page.goto('/auth/');
+
   await page.getByPlaceholder('Enter email')
     .fill(process.env.PROVIDER_EMAIL!);
 
   await page.getByPlaceholder('Enter password')
     .fill(process.env.PROVIDER_PASSWORD!);
-
+await page.pause();
   await page.getByRole('button', { name: 'Sign in' }).click();
+await page.pause();
+  // Ждем пока появится настоящий provider URL
+  await page.waitForURL(
+    /\/provider\/[0-9a-f-]{36}\/[0-9a-f-]{36}/,
+    { timeout: 10000 }
+  );
+  await page.pause();
+  console.log("REAL URL:", page.url());
 
-  // 3️⃣ Проверяем, что логин успешен
-  await expect(page).toHaveURL(/provider/);
+  await page.waitForTimeout(5000);
 
-  // 4️⃣ Сохраняем storageState в корень проекта
-  await page.context().storageState({ path: 'authProvider.json' });
+  await page.context().storageState({
+    path: 'authProvider.json'
+  });
 
-  console.log('✅ Auth state saved to authProvider.json');
+  console.log('✅ Provider auth saved');
+
 });
-

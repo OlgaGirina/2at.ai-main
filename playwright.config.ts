@@ -25,109 +25,93 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
-/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    baseURL: 'https://2at.ai',      
+  use: {    
     trace: 'on-first-retry',
     headless: true, 
     ignoreHTTPSErrors: true,   // ⬅️ SSL ошибки игнорируем
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-   /* baseURL: 'https://dev.2at.ai',
-    storageState: './authState.json', // 👈 будет использовать авторизацию
-    */
-
   },
   
-  /* Configure projects for major browsers */
+  /* Configure projects for major browsers */ 
+   projects: [
+{
+  name: 'setup-client',
+  testMatch: '**/auth.client.setup.ts',
+  use: {
+  baseURL: 'https://2at.ai',
+}
+},
+{
+  name: 'setup-provider',
+  testMatch: '**/auth.provider.setup.ts',
+  use: {
+ baseURL: 'https://pro.2at.ai',
+ browserName: 'firefox',
+      }
+},
+{
+  name: 'client',
+  dependencies: ['setup-client'],
+  testMatch: '**/client.spec.ts',
+
+  use: {
+    ...devices['Desktop Chrome'],
+    baseURL: 'https://2at.ai',
+    storageState: 'authClient.json',
+  },
+},
+{
+  name: 'provider',
+  dependencies: ['setup-provider'],
+  testMatch: '**/provider.spec.ts',
+  use: {
+    //...devices['Desktop Chrome'],
+    storageState: 'authProvider.json',
+    baseURL: 'https://pro.2at.ai',
+    browserName: 'firefox',
+  },
+},
+{
+  name: 'auth-client',
+  testMatch: '**/authTestv2.spec.ts',
+  use: { ...devices['Desktop Chrome'],
+    baseURL: 'https://2at.ai',
+    storageState: undefined,
+     },
  
-  projects: [
+},
 
-     // CLIENT SETUP
-  {
-    name: 'setup-client',
-    testMatch: /auth\.client\.setup\.ts/,
+{
+  name: 'auth-provider',
+  testMatch: '**/authTestv2provider.spec.ts',
+
+  use: { ...devices['Desktop Chrome'],
+    baseURL: 'https://pro.2at.ai',
+    storageState: undefined,
+    browserName: 'firefox', },
+    
+},
+{
+  name: 'registration',
+  testMatch: '**/registration.spec.ts',
+
+  use: {
+    //...devices['Desktop Chrome'],
+    baseURL: 'https://2at.ai',
+    storageState: undefined,
+    browserName: 'firefox',
   },
-
-  // PROVIDER SETUP
-  {
-    name: 'setup-provider',
-    testMatch: /auth\.provider\.setup\.ts/,
-  },
-
-  // CLIENT PROFILE
-  {
-    name: 'client-profile',
-    dependencies: ['setup-client'],
-    use: {
-      ...devices['Desktop Chrome'],
-      storageState: 'authClient.json',
-    },
-    testMatch: /client\.spec\.ts/,
-  },
-
-  // PROVIDER PROFILE
-  {
-    name: 'provider-profile',
-    dependencies: ['setup-provider'],
-    use: {
-      ...devices['Desktop Chrome'],
-      storageState: 'authProvider.json',
-    },
-    testMatch: /provider\.spec\.ts/,
-  },
-
-    // 2️⃣ AUTH тесты (без storage)
-    {
-      name: 'auth',
+},
+ /*  {
+      name: 'firefox-provider',
       use: {
-        ...devices['Desktop Chrome'],
+        ...devices['Desktop Firefox'],
+        storageState: 'playwright/.auth/provider.json',
       },
-      testMatch: /authTestv2\.spec\.ts/,
-    },
-
-    // 3️⃣ REGISTRATION тесты (без storage)
-    {
-      name: 'registration',
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-      testMatch: /registration\.spec\.ts/,
-    },
-
-
-  /*  {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
     }, */
 
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
-  ],
+]
 
   /* Run your local dev server before starting the tests */
   // webServer: {

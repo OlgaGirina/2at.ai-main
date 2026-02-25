@@ -14,11 +14,6 @@ if (!email || !password) {
 test.describe('PROVIDER PROFILE TESTS', () => {
   test.beforeEach(async ({ page }) => {
     const navigation = new NavigationPage (page);
-   // const loginPage = new LoginPage(page);
-  //  await navigation.goToLogin();
-  //  await loginPage.login(PROVIDER.email, PROVIDER.password);
-    // идём сразу в профиль
- // await navigation.goToProviderProfile('ef5f17d8-b391-4f20-80ed-7dbbb93d9d37')
   await navigation.goToProviderProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512')
   });
 
@@ -35,10 +30,6 @@ test.describe('PROVIDER PROFILE TESTS', () => {
     // отобаражается валидационная ошибка под полем email
     const error = modal.locator('#login_help .ant-form-item-explain-error');
     await expect(error).toContainText(/This email is already registered. Please use another one./i);
-     // ожидаем уведомление справа
-   // const notif = page.getByRole('alert').locator('.ant-notification-notice-description').first();
-  //  await expect(notif).toBeVisible({ timeout: 7000 });
-   // await expect(notif).toContainText(/Failed to update email: User not updated/i, { timeout: 5000 });
  
   });
     test('PROVIDER-02 | Warning when changing email without current password', async ({ page }) => {
