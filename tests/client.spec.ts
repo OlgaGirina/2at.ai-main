@@ -43,13 +43,7 @@ test.describe('CLIENT PROFILE TESTS', () => {
 // отобаражается валидационная ошибка под полем email
 const error = modal.locator('#login_help .ant-form-item-explain-error');
 await expect(error).toContainText(/This email is already registered. Please use another one./i);
-
-     // ожидаем уведомление справа
- // const notif = page.getByRole('alert').locator('.ant-notification-notice-description').first();
- // await expect(notif).toBeVisible({ timeout: 7000 });
- // await expect(notif).toContainText(/Failed to update email: User not updated/i, { timeout: 5000 });
-
-  console.log('⚠️ Validation popup: company name already exists');
+console.log('⚠️ Validation popup: company name already exists');
   });
 
    test('CLIENT-03 | Warning when changing email without current password', async ({ page }) => {

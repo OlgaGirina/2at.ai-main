@@ -2,53 +2,53 @@
   "cookies": [
     {
       "name": "_ga",
-      "value": "GA1.1.2089123627.1772007905",
+      "value": "GA1.1.472699965.1772049687",
       "domain": ".2at.ai",
       "path": "/",
-      "expires": 1806567905.455585,
+      "expires": 1806609686,
       "httpOnly": false,
       "secure": false,
-      "sameSite": "Lax"
+      "sameSite": "None"
     },
     {
       "name": "_cs_c",
       "value": "0",
       "domain": ".2at.ai",
       "path": "/",
-      "expires": 1806171905,
+      "expires": 1806213687,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Lax"
     },
     {
-      "name": "_ga_GJGWC9WP58",
-      "value": "GS2.1.s1772007905$o1$g1$t1772007906$j59$l0$h0",
-      "domain": ".2at.ai",
-      "path": "/",
-      "expires": 1806567906.209928,
-      "httpOnly": false,
-      "secure": false,
-      "sameSite": "Lax"
-    },
-    {
       "name": "_cs_id",
-      "value": "2b6e95e9-fb89-afb4-f155-451bd7e81980.1772007905.1.1772007906.1772007905.1.1806171905496.1.x",
+      "value": "ec9f6fdb-ad7f-aadb-90ad-923b3334d707.1772049687.1.1772049687.1772049687.1.1806213687019.1.x",
       "domain": ".2at.ai",
       "path": "/",
-      "expires": 1806171905,
+      "expires": 1806213687,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Lax"
     },
     {
       "name": "_cs_s",
-      "value": "2.0.U.9.1772009706211",
+      "value": "1.0.U.9.1772051487023",
       "domain": ".2at.ai",
       "path": "/",
-      "expires": 1772009706,
+      "expires": 1772051487,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Lax"
+    },
+    {
+      "name": "_ga_GJGWC9WP58",
+      "value": "GS2.1.s1772049686$o1$g1$t1772049687$j59$l0$h0",
+      "domain": ".2at.ai",
+      "path": "/",
+      "expires": 1806609687,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
     }
   ],
   "origins": [
@@ -57,11 +57,11 @@
       "localStorage": [
         {
           "name": "accounts",
-          "value": "{\"client\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDbGllbnQyNDEwMjAyNTJAZ21haWwuY29tIiwidWlkIjoiNTI4NiIsInV1aWQiOiJjMzU1MmY5Ny05ZWFiLTQ2ODItOTZkMi1mNmQwOWQ0NGI2YzIiLCJiczY0IjoiUTJ4cFpXNTBNalF4TURJd01qVXlRR2R0WVdsc0xtTnZiVFV5T0Raak16VTFNbVk1TnkwNVpXRmlMVFEyT0RJdE9UWmtNaTFtTm1Rd09XUTBOR0kyWXpJPSIsImV4cCI6MTc3MjI2NzEwNX0.hXMaHbXL6KM9dCGJ9Y90VnUSkE1MJFMTyoD4Fi7je6k\",\"role\":\"client\",\"lastUsed\":1772007905967}}"
+          "value": "{\"client\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDbGllbnQyNDEwMjAyNTJAZ21haWwuY29tIiwidWlkIjoiNTI4NiIsInV1aWQiOiJjMzU1MmY5Ny05ZWFiLTQ2ODItOTZkMi1mNmQwOWQ0NGI2YzIiLCJiczY0IjoiUTJ4cFpXNTBNalF4TURJd01qVXlRR2R0WVdsc0xtTnZiVFV5T0Raak16VTFNbVk1TnkwNVpXRmlMVFEyT0RJdE9UWmtNaTFtTm1Rd09XUTBOR0kyWXpJPSIsImV4cCI6MTc3MjMwODg4N30.vyoCRmdG7bcPSQGsqKX4QKiBEsiHITTUvfZXVvuUgB4\",\"role\":\"client\",\"lastUsed\":1772049687546}}"
         },
         {
           "name": "ce_bot_detector",
-          "value": "{\"visits\":0,\"clicks\":1,\"firstVisitTime\":1772007905652,\"detected\":false}"
+          "value": "{\"visits\":0,\"clicks\":1,\"firstVisitTime\":1772049687196,\"detected\":false}"
         }
       ]
     }

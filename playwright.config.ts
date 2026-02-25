@@ -40,6 +40,7 @@ export default defineConfig({
   testMatch: '**/auth.client.setup.ts',
   use: {
   baseURL: 'https://2at.ai',
+  browserName: 'firefox'
 }
 },
 {
@@ -56,9 +57,10 @@ export default defineConfig({
   testMatch: '**/client.spec.ts',
 
   use: {
-    ...devices['Desktop Chrome'],
+    //...devices['Desktop Chrome'],
     baseURL: 'https://2at.ai',
     storageState: 'authClient.json',
+    browserName: 'firefox',
   },
 },
 {
@@ -78,6 +80,7 @@ export default defineConfig({
   use: { ...devices['Desktop Chrome'],
     baseURL: 'https://2at.ai',
     storageState: undefined,
+   // browserName: 'firefox'
      },
  
 },
