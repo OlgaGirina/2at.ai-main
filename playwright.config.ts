@@ -23,6 +23,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,   // ⬅️ SSL ошибки игнорируем
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+
   },
   /* Configure projects for major browsers */
   projects: [
@@ -32,6 +33,7 @@ export default defineConfig({
       use: {
         baseURL: 'https://2at.ai',
         browserName: 'firefox'
+
       }
     },
     {
