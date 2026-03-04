@@ -1,12 +1,67 @@
 {
-  "cookies": [],
+  "cookies": [
+    {
+      "name": "_cs_c",
+      "value": "0",
+      "domain": ".2at.ai",
+      "path": "/",
+      "expires": 1806623525,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_ga",
+      "value": "GA1.1.924752298.1772459525",
+      "domain": ".2at.ai",
+      "path": "/",
+      "expires": 1807019527,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "_cs_id",
+      "value": "cb27ca3f-ad7f-a3cd-ad9a-e9a375c334e7.1772459525.1.1772459528.1772459525.1.1806623525017.1.x",
+      "domain": ".2at.ai",
+      "path": "/",
+      "expires": 1806623525,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_cs_s",
+      "value": "6.0.U.9.1772461328665",
+      "domain": ".2at.ai",
+      "path": "/",
+      "expires": 1772461328,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_ga_GJGWC9WP58",
+      "value": "GS2.1.s1772459524$o1$g1$t1772459528$j56$l0$h0",
+      "domain": ".2at.ai",
+      "path": "/",
+      "expires": 1807019528,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    }
+  ],
   "origins": [
     {
       "origin": "https://pro.2at.ai",
       "localStorage": [
         {
           "name": "accounts",
-          "value": "{\"provider\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlbWFpbHByb3ZpZGVyQGdtYWlsLmNvbSIsInVpZCI6IjI3MjAiLCJ1dWlkIjoiNzhiNGViMmUtMDc2My00ZjdlLTgyOTMtMzgwMDAzYmJiMjc0IiwiYnM2NCI6IlpXMWhhV3h3Y205MmFXUmxja0JuYldGcGJDNWpiMjB5TnpJd056aGlOR1ZpTW1VdE1EYzJNeTAwWmpkbExUZ3lPVE10TXpnd01EQXpZbUppTWpjMCIsImV4cCI6MTc3MjMwODk1Nn0.4xkbNOoV1mrmE2KRxzkNxu_jjyq2M7v5EvuN9LEuqyM\",\"role\":\"vendor\",\"lastUsed\":1772049756660}}"
+          "value": "{\"provider\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlbWFpbHByb3ZpZGVyQGdtYWlsLmNvbSIsInVpZCI6IjI3MjAiLCJ1dWlkIjoiNzhiNGViMmUtMDc2My00ZjdlLTgyOTMtMzgwMDAzYmJiMjc0IiwiYnM2NCI6IlpXMWhhV3h3Y205MmFXUmxja0JuYldGcGJDNWpiMjB5TnpJd056aGlOR1ZpTW1VdE1EYzJNeTAwWmpkbExUZ3lPVE10TXpnd01EQXpZbUppTWpjMCIsImV4cCI6MTc3MjcxODcyNX0.bjZ3mvyt3AdL64RJu__ey-4QviBTyaUawsKb3478kdY\",\"role\":\"vendor\",\"lastUsed\":1772459525603}}"
+        },
+        {
+          "name": "ce_bot_detector",
+          "value": "{\"visits\":1,\"clicks\":1,\"firstVisitTime\":1772459525128,\"detected\":false}"
         }
       ]
     }

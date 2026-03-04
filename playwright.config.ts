@@ -1,16 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
- import dotenv from 'dotenv';
- import path from 'path';
- dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   testDir: './tests',
   //testIgnore: ['tests/auth.setup.ts'],
@@ -25,102 +17,100 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {    
+  use: {
     trace: 'on-first-retry',
-    headless: true, 
+    headless: !!process.env.CI,
     ignoreHTTPSErrors: true,   // ⬅️ SSL ошибки игнорируем
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  
-  /* Configure projects for major browsers */ 
-   projects: [
-{
-  name: 'setup-client',
-  testMatch: '**/auth.client.setup.ts',
-  use: {
-  baseURL: 'https://2at.ai',
-  browserName: 'firefox'
-}
-},
-{
-  name: 'setup-provider',
-  testMatch: '**/auth.provider.setup.ts',
-  use: {
- baseURL: 'https://pro.2at.ai',
- browserName: 'firefox',
-      }
-},
-{
-  name: 'client',
-  dependencies: ['setup-client'],
-  testMatch: '**/client.spec.ts',
-
-  use: {
-    //...devices['Desktop Chrome'],
-    baseURL: 'https://2at.ai',
-    storageState: 'authClient.json',
-    browserName: 'firefox',
-  },
-},
-{
-  name: 'provider',
-  dependencies: ['setup-provider'],
-  testMatch: '**/provider.spec.ts',
-  use: {
-    //...devices['Desktop Chrome'],
-    storageState: 'authProvider.json',
-    baseURL: 'https://pro.2at.ai',
-    browserName: 'firefox',
-  },
-},
-{
-  name: 'auth-client',
-  testMatch: '**/authTestv2.spec.ts',
-  use: { ...devices['Desktop Chrome'],
-    baseURL: 'https://2at.ai',
-    storageState: undefined,
-   // browserName: 'firefox'
-     },
- 
-},
-
-{
-  name: 'auth-provider',
-  testMatch: '**/authTestv2provider.spec.ts',
-
-  use: { ...devices['Desktop Chrome'],
-    baseURL: 'https://pro.2at.ai',
-    storageState: undefined,
-    browserName: 'firefox', },
-    
-},
-{
-  name: 'registration',
-  testMatch: '**/registration.spec.ts',
-
-  use: {
-    //...devices['Desktop Chrome'],
-    baseURL: 'https://2at.ai',
-    storageState: undefined,
-    browserName: 'firefox',
-  },
-},
- /*  {
-      name: 'firefox-provider',
+  /* Configure projects for major browsers */
+  projects: [
+    {
+      name: 'setup-client',
+      testMatch: '**/auth.client.setup.ts',
       use: {
-        ...devices['Desktop Firefox'],
-        storageState: 'playwright/.auth/provider.json',
+        baseURL: 'https://2at.ai',
+        browserName: 'firefox'
+      }
+    },
+    {
+      name: 'setup-provider',
+      testMatch: '**/auth.provider.setup.ts',
+      use: {
+        baseURL: 'https://pro.2at.ai',
+        browserName: 'firefox',
+      }
+    },
+    {
+      name: 'client',
+      dependencies: ['setup-client'],
+      testMatch: '**/client.spec.ts',
+
+      use: {
+        //...devices['Desktop Chrome'],
+        baseURL: 'https://2at.ai',
+        storageState: 'authClient.json',
+        browserName: 'firefox',
       },
-    }, */
+    },
+    {
+      name: 'provider',
+      dependencies: ['setup-provider'],
+      testMatch: '**/provider.spec.ts',
+      use: {
+        //...devices['Desktop Chrome'],
+        storageState: 'authProvider.json',
+        baseURL: 'https://pro.2at.ai',
+        browserName: 'firefox',
+      },
+    },
+    {
+      name: 'auth-client',
+      testMatch: '**/authTestv2.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://2at.ai',
+        storageState: undefined,
+        // browserName: 'firefox'
+      },
 
-]
+    },
+    {
+      name: 'auth-provider',
+      testMatch: '**/authTestv2provider.spec.ts',
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
-  
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://pro.2at.ai',
+        storageState: undefined,
+        browserName: 'firefox',
+      },
+
+    },
+    {
+      name: 'registration',
+      testMatch: '**/registration.spec.ts',
+
+      use: {
+        //...devices['Desktop Chrome'],
+        baseURL: 'https://2at.ai',
+        storageState: undefined,
+        browserName: 'firefox',
+      },
+    },
+
+    {
+      name: 'caseCreation',
+      testMatch: '**/caseCreation.spec.ts',
+
+      use: {
+        storageState: 'authProvider.json',
+        baseURL: 'https://pro.2at.ai',
+        browserName: 'firefox',
+
+      }
+    }
+
+  ]
 });

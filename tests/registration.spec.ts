@@ -89,7 +89,7 @@ const registerCases = [
     selector: '.ant-form-item-explain-error',
     expectedTexts: ['User already exists. Please use the Sign In form']
   },
- {
+  {
     id: 'REG-01-09',
     title: 'Invalid Client Registration - Ivalid email',
     type: 'FIELD_ERROR',
@@ -103,73 +103,44 @@ const registerCases = [
 ];
 // 🔹 Цикл по кейсам
 for (const data of registerCases) {
-    test(`${data.id} | ${data.title}`, async ({ page }) => {
+  test(`${data.id} | ${data.title}`, async ({ page }) => {
     console.log(`▶️ ${data.id}: ${data.title}`);
-    const navigation = new NavigationPage (page);
+    const navigation = new NavigationPage(page);
     await navigation.goToRerFormModal();
-   // await page.goto('https://dev.2at.ai/auth/registerForm?partnership=client');
-
-   // Закрытие попапа  уведомляющего о куках
+    // Закрытие попапа  уведомляющего о куках
     await page.waitForSelector('#cookie_apply1', { state: 'visible' });
-    await page.click('#cookie_apply1');  
+    await page.click('#cookie_apply1');
+    // 1️⃣ Клик по кнопке, чтобы открыть модалку (и iframe)
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await page.waitForSelector('#auth-iframe');
+    // нажать Join Us
+    await page
+      .frameLocator('#auth-iframe')
+      .getByRole('button', { name: 'Join Us' })
+      .click();
 
-// 1️⃣ Клик по кнопке, чтобы открыть модалку (и iframe)
-await page.getByRole('button', { name: 'Sign in' }).click();
-await page.waitForSelector('#auth-iframe');
+    const frame = page.frameLocator('#auth-iframe');
+    const companyInput = frame.getByRole('textbox', { name: /company name/i });
 
-// нажать Join Us
-await page
-  .frameLocator('#auth-iframe')
-  .getByRole('button', { name: 'Join Us' })
-  .click();
+    await companyInput.click();
+    await companyInput.pressSequentially(data.company, { delay: 50 });
+    await companyInput.blur();
 
-// дождаться второго шага
-/*await expect(
-  page
-    .frameLocator('#auth-iframe')
-    .getByText('How would you like to use 2aT?')
-).toBeVisible();
+    // ждём, что форма раскрылась
+    await expect(frame.getByRole('checkbox')).toBeVisible({ timeout: 10000 });
 
-console.log(
-  await page
-    .frameLocator('#auth-iframe')
-    .locator('label:has-text("Find and hire a trusted partner")')
-    .count()
-);
-const frame = page.frameLocator('#auth-iframe');
-await frame
-  .locator('label.ant-radio-button-wrapper', { hasText: 'Find and hire a trusted partner' })
-  .scrollIntoViewIfNeeded();
-await frame
-  .locator('label.ant-radio-button-wrapper', { hasText: 'Find and hire a trusted partner' })
-  .click();
+    // теперь чекбокс точно есть
+    await frame.getByRole('checkbox').click();
 
-const continueBtn = frame.getByRole('button', { name: 'Continue' });
-await expect(continueBtn).toBeEnabled();
-await continueBtn.click(); */
-
-const frame = page.frameLocator('#auth-iframe');
-const companyInput = frame.getByRole('textbox', { name: /company name/i });
-
-await companyInput.click();
-await companyInput.pressSequentially(data.company, { delay: 50 });
-await companyInput.blur();
-
-// ждём, что форма раскрылась
-await expect(frame.getByRole('checkbox')).toBeVisible({ timeout: 10000 });
-
-// теперь чекбокс точно есть
-await frame.getByRole('checkbox').click();
-
-await frame.getByRole('button', { name: 'Create account' }).click();
-      await frame.getByPlaceholder('Enter email').fill(data.email);
+    await frame.getByRole('button', { name: 'Create account' }).click();
+    await frame.getByPlaceholder('Enter email').fill(data.email);
 
     if (data.password !== undefined)
       await frame.getByPlaceholder('Enter password').fill(data.password);
 
     if (data.confirmPassword !== undefined)
       await frame.getByPlaceholder('Confirm password').fill(data.confirmPassword);
-    
+
     // Активировать чек-бокс
     await frame.getByRole('checkbox', { name: 'I agree to Terms of Use and' }).check();
 
@@ -190,7 +161,7 @@ await frame.getByRole('button', { name: 'Create account' }).click();
       for (const text of data.expectedTexts ?? 'Incorrect email or password') {
         const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error').first();
         await expect(errorLocator).toContainText(text, { timeout: 5000 });
-       //await expect(errorLocator).toHaveText(text); 
+        //await expect(errorLocator).toHaveText(text); 
 
         console.log(`⚠️ ${data.id}: Error message displayed — "${text}"`);
       }

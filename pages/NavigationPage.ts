@@ -13,21 +13,24 @@ export class NavigationPage {
   }
   // --- REG ---
   async goToRerForm() {
-    await this.page.goto('https://2at.ai/auth/registerForm?partnership=client',{waitUntil: 'domcontentloaded'});
+    await this.page.goto('https://2at.ai/auth/registerForm?partnership=client', { waitUntil: 'domcontentloaded' });
   }
   // --- CLIENT PAGES ---
-async goToClientProfile(id: string) {
-  await this.page.goto(`/client/${id}/profile`);
-}
+  async goToClientProfile(id: string) {
+    await this.page.goto(`/client/${id}/profile`);
+  }
   // --- PROVIDER PAGES ---
   async goToProviderProfile(id: string) {
     await this.page.goto(`/provider/${id}/profile`);
   }
-   async goToLoginModal() {
+  async goToLoginModal() {
     await this.page.goto('https://2at.ai', { waitUntil: 'domcontentloaded' });
   }
   // --- REG ---
   async goToRerFormModal() {
-    await this.page.goto('https://2at.ai',{waitUntil: 'domcontentloaded'});
+    await this.page.goto('https://2at.ai', { waitUntil: 'domcontentloaded' });
+  }
+  async goToProviderCaseProfile(id: string, case_id: string) {
+    await this.page.goto(`/provider/${id}/${case_id}`);
   }
 }
