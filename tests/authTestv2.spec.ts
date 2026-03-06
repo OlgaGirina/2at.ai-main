@@ -54,76 +54,76 @@ const loginCases = [
     expectedText: 'Incorrect email or password'
   },
   {
-  id: 'AUTH-TC-07',
-  title: 'Login with empty fields',
-  email: '',
-  password: '',
-  type: 'FIELD_ERROR',
-  selector: '#email_help .ant-form-item-explain-error',
-  expectedText: 'Please input your email!'
-},
-{
-  id: 'AUTH-TC-07b',
-  title: 'Login with empty fields (password)',
-  email: 'olik255@rambler.ru',
-  password: '',
-  type: 'FIELD_ERROR',
-  selector: '#password_help .ant-form-item-explain-error',
-  expectedText: 'Please input your password!'
-},
-{
-  id: 'AUTH-TC-08',
-  title: 'Login with spaces only',
-  email: '   ',
-  password: '   ',
-  type: 'FIELD_ERROR',
-  selector: '#email_help .ant-form-item-explain-error',
-  expectedText: 'Please input a valid email!'
-},
-{
-  id: 'AUTH-TC-08b',
-  title: 'Login with spaces only (password)',
-  email: '   ',
-  password: '   ',
-  type: 'FIELD_ERROR',
-  selector: '#password_help .ant-form-item-explain-error',
-  expectedText: 'Password must be at least 8 characters!'
-},
+    id: 'AUTH-TC-07',
+    title: 'Login with empty fields',
+    email: '',
+    password: '',
+    type: 'FIELD_ERROR',
+    selector: '#email_help .ant-form-item-explain-error',
+    expectedText: 'Please input your email!'
+  },
+  {
+    id: 'AUTH-TC-07b',
+    title: 'Login with empty fields (password)',
+    email: 'olik255@rambler.ru',
+    password: '',
+    type: 'FIELD_ERROR',
+    selector: '#password_help .ant-form-item-explain-error',
+    expectedText: 'Please input your password!'
+  },
+  {
+    id: 'AUTH-TC-08',
+    title: 'Login with spaces only',
+    email: '   ',
+    password: '   ',
+    type: 'FIELD_ERROR',
+    selector: '#email_help .ant-form-item-explain-error',
+    expectedText: 'Please input a valid email!'
+  },
+  {
+    id: 'AUTH-TC-08b',
+    title: 'Login with spaces only (password)',
+    email: '   ',
+    password: '   ',
+    type: 'FIELD_ERROR',
+    selector: '#password_help .ant-form-item-explain-error',
+    expectedText: 'Password must be at least 8 characters!'
+  },
 ];
 
 for (const data of loginCases) {
   test(`${data.id} | ${data.title}`, async ({ page }) => {
     console.log(`▶️ ${data.id}: ${data.title}`);
-    const navigation = new NavigationPage (page);
+    const navigation = new NavigationPage(page);
     await navigation.goToLoginModal();
-   // await page.goto('https://dev.2at.ai/auth/');
 
-await page.waitForSelector('#cookie_apply1', { state: 'visible' });
-await page.click('#cookie_apply1');
 
-   // 1️⃣ Клик по кнопке, чтобы открыть модалку (и iframe)
-await page.getByRole('button', { name: 'Sign in' }).click();
+    await page.waitForSelector('#cookie_apply1', { state: 'visible' });
+    await page.click('#cookie_apply1');
 
-// 2️⃣ Ждём появления iframe
-const frame = page.frameLocator('#auth-iframe');
-
-// 3️⃣ Заполняем поля ВНУТРИ iframe
-await frame.locator('input[placeholder="Enter email"]').fill(data.email);
-await frame.locator('input[placeholder="Enter password"]').fill(data.password);
-
-// 4️⃣ Кликаем на Sign in внутри iframe
-// await frame.getByRole('button', { name: 'Sign in' }).click();
-
-// 4️⃣ Кликаем Enter после пароля ВНУТРИ iframe
-await frame.locator('input[type="password"]').press('Enter');
-
- /*   // Вводим данные
-    await page.getByPlaceholder('Enter email').fill(data.email);
-    await page.getByPlaceholder('Enter password').fill(data.password);
-
-    // Кликаем Sign in
+    // 1️⃣ Клик по кнопке, чтобы открыть модалку (и iframe)
     await page.getByRole('button', { name: 'Sign in' }).click();
-*/
+
+    // 2️⃣ Ждём появления iframe
+    const frame = page.frameLocator('#auth-iframe');
+
+    // 3️⃣ Заполняем поля ВНУТРИ iframe
+    await frame.locator('input[placeholder="Enter email"]').fill(data.email);
+    await frame.locator('input[placeholder="Enter password"]').fill(data.password);
+
+    // 4️⃣ Кликаем на Sign in внутри iframe
+    // await frame.getByRole('button', { name: 'Sign in' }).click();
+
+    // 4️⃣ Кликаем Enter после пароля ВНУТРИ iframe
+    await frame.locator('input[type="password"]').press('Enter');
+
+    /*   // Вводим данные
+       await page.getByPlaceholder('Enter email').fill(data.email);
+       await page.getByPlaceholder('Enter password').fill(data.password);
+   
+       // Кликаем Sign in
+       await page.getByRole('button', { name: 'Sign in' }).click();
+   */
     // Проверка по типу сценария
     if (data.type === 'SUCCESS_CLIENT') {
       try {
@@ -145,11 +145,11 @@ await frame.locator('input[type="password"]').press('Enter');
         console.log(`⚠️ ${data.id}: Provider login failed`);
       }
     } else if (data.type === 'FIELD_ERROR') {
-  const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error');
-  const expectedText = data.expectedText ?? 'Incorrect email or password';
-  await expect(errorLocator).toContainText(expectedText);
-  console.log(`⚠️ ${data.id}: Error message displayed — "${expectedText}"`);
-}
+      const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error');
+      const expectedText = data.expectedText ?? 'Incorrect email or password';
+      await expect(errorLocator).toContainText(expectedText);
+      console.log(`⚠️ ${data.id}: Error message displayed — "${expectedText}"`);
     }
+  }
   );
 }

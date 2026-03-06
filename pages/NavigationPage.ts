@@ -9,11 +9,11 @@ export class NavigationPage {
   }
   // --- AUTH ---
   async goToLogin() {
-    await this.page.goto('https://2at.ai/auth/login', { waitUntil: 'domcontentloaded' });
+    await this.page.goto('/auth/login', { waitUntil: 'domcontentloaded' });
   }
   // --- REG ---
   async goToRerForm() {
-    await this.page.goto('https://2at.ai/auth/registerForm?partnership=client', { waitUntil: 'domcontentloaded' });
+    await this.page.goto('/auth/registerForm?partnership=client', { waitUntil: 'domcontentloaded' });
   }
   // --- CLIENT PAGES ---
   async goToClientProfile(id: string) {
@@ -24,11 +24,11 @@ export class NavigationPage {
     await this.page.goto(`/provider/${id}/profile`);
   }
   async goToLoginModal() {
-    await this.page.goto('https://2at.ai', { waitUntil: 'domcontentloaded' });
+    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
   }
   // --- REG ---
   async goToRerFormModal() {
-    await this.page.goto('https://2at.ai', { waitUntil: 'domcontentloaded' });
+    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
   }
   async goToProviderCaseProfile(id: string, case_id: string) {
     await this.page.goto(`/provider/${id}/${case_id}`);

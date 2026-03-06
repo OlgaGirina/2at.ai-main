@@ -31,7 +31,7 @@ export default defineConfig({
       name: 'setup-client',
       testMatch: '**/auth.client.setup.ts',
       use: {
-        baseURL: 'https://2at.ai',
+        baseURL: process.env.CLIENT_URL || 'https://2at.ai',
         browserName: 'firefox'
 
       }
@@ -40,7 +40,7 @@ export default defineConfig({
       name: 'setup-provider',
       testMatch: '**/auth.provider.setup.ts',
       use: {
-        baseURL: 'https://pro.2at.ai',
+        baseURL: process.env.PROVIDER_URL || 'https://pro.2at.ai',
         browserName: 'firefox',
       }
     },
@@ -51,7 +51,7 @@ export default defineConfig({
 
       use: {
         //...devices['Desktop Chrome'],
-        baseURL: 'https://2at.ai',
+        baseURL: process.env.CLIENT_URL || 'https://2at.ai',
         storageState: 'authClient.json',
         browserName: 'firefox',
       },
@@ -63,7 +63,7 @@ export default defineConfig({
       use: {
         //...devices['Desktop Chrome'],
         storageState: 'authProvider.json',
-        baseURL: 'https://pro.2at.ai',
+        baseURL: process.env.PROVIDER_URL || 'https://pro.2at.ai',
         browserName: 'firefox',
       },
     },
@@ -72,7 +72,7 @@ export default defineConfig({
       testMatch: '**/authTestv2.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://2at.ai',
+        baseURL: process.env.CLIENT_URL || 'https://2at.ai',
         storageState: undefined,
         // browserName: 'firefox'
       },
@@ -84,7 +84,7 @@ export default defineConfig({
 
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://pro.2at.ai',
+        baseURL: process.env.PROVIDER_URL || 'https://pro.2at.ai',
         storageState: undefined,
         browserName: 'firefox',
       },
@@ -96,7 +96,7 @@ export default defineConfig({
 
       use: {
         //...devices['Desktop Chrome'],
-        baseURL: 'https://2at.ai',
+        baseURL: process.env.CLIENT_URL || 'https://2at.ai',
         storageState: undefined,
         browserName: 'firefox',
       },
@@ -108,7 +108,7 @@ export default defineConfig({
 
       use: {
         storageState: 'authProvider.json',
-        baseURL: 'https://pro.2at.ai',
+        baseURL: process.env.PROVIDER_URL || 'https://pro.2at.ai',
         browserName: 'firefox',
 
       }

@@ -4,6 +4,16 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Выберите окружение'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
 jobs:
   test:
     timeout-minutes: 60
@@ -18,13 +28,16 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
       env:
+        # Логика: если выбран 'dev', берем DEV_URL, иначе PROD_URL
+        CLIENT_URL: ${{ inputs.environment == 'dev' && secrets.DEV_CLIENT_URL || secrets.PROD_CLIENT_URL }}
+        PROVIDER_URL: ${{ inputs.environment == 'dev' && secrets.DEV_PROVIDER_URL || secrets.PROD_PROVIDER_URL }}
         PROVIDER_EMAIL: ${{ secrets.PROVIDER_EMAIL }}
         PROVIDER_PASSWORD: ${{ secrets.PROVIDER_PASSWORD }}
         CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
         CLIENT_PASSWORD: ${{ secrets.CLIENT_PASSWORD }}
         EXISTING_EMAIL: ${{ secrets.EXISTING_EMAIL }}
+      run: npx playwright test
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
