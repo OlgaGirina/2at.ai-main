@@ -4,6 +4,7 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
+  timeout: 15000,
   testDir: './tests',
   //testIgnore: ['tests/auth.setup.ts'],
   /* Run tests in files in parallel */
@@ -23,6 +24,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,   // ⬅️ SSL ошибки игнорируем
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    navigationTimeout: 10000,
 
   },
   /* Configure projects for major browsers */

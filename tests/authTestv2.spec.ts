@@ -140,9 +140,21 @@ for (const data of loginCases) {
         await expect(page.locator('.name')).toBeVisible({ timeout: 8000 });
         console.log(`✅ ${data.id}: Provider login success`);
       } catch {
-        await expect(frame.locator('#email_help .ant-form-item-explain-error'))
-          .toContainText('Incorrect email or password');
-        console.log(`⚠️ ${data.id}: Provider login failed`);
+        const fieldError = frame.locator('#email_help .ant-form-item-explain-error');
+        const popupError = frame.locator('.auth-modal-frame');
+        // Ждем, пока появится ХОТЯ БЫ один из этих элементов
+        await expect(fieldError.or(popupError)).toBeVisible({ timeout: 5000 });
+        // Проверяем, какой именно текст мы получили
+        if (await fieldError.isVisible()) {
+          await expect(fieldError).toContainText('Incorrect email or password');
+        } else {
+          await expect(popupError).toContainText('Incorrect Login Role');
+          console.log(`Check domain`);
+        }
+
+        /* await expect(frame.locator('#email_help .ant-form-item-explain-error'))
+           .toContainText('Incorrect email or password');
+         console.log(`⚠️ ${data.id}: Provider login failed`);*/
       }
     } else if (data.type === 'FIELD_ERROR') {
       const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error');

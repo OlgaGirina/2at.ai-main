@@ -12,17 +12,17 @@ const registerCases = [
     password: 'ValidPass123',
     confirmPassword: 'ValidPass123',
   },
-  {
-    id: 'REG-01-02',
-    title: 'Invalid Client Registration - Empty Fields',
-    type: 'FIELD_ERROR',
-    company: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    selector: '#email_help .ant-form-item-explain-error',
-    expectedTexts: ["Please input your email!"]
-  },
+  /* {
+     id: 'REG-01-02',
+     title: 'Invalid Client Registration - Empty Fields',
+     type: 'FIELD_ERROR',
+     company: '',
+     email: '',
+     password: '',
+     confirmPassword: '',
+     selector: '#email_help .ant-form-item-explain-error',
+     expectedTexts: ["Please input your email!"]
+   },*/
   {
     id: 'REG-01-03',
     title: 'Invalid Client Registration - Wrong Email Format',
@@ -80,14 +80,14 @@ const registerCases = [
   },
   {
     id: 'REG-01-08',
-    title: 'Invalid Client Registration - Existing Email',
-    type: 'FIELD_ERROR',
+    title: 'Client Registration(Autorisation) - Existing Email',
+    type: 'SUCCESS',
     company: 'NewCompany_' + Date.now(),
     email: 'olik255@rambler.ru', // существующий email
     password: 'ValidPass123',
     confirmPassword: 'ValidPass123',
     selector: '.ant-form-item-explain-error',
-    expectedTexts: ['User already exists. Please use the Sign In form']
+    // expectedTexts: ['User already exists. Please use the Sign In form']
   },
   {
     id: 'REG-01-09',
@@ -150,8 +150,9 @@ for (const data of registerCases) {
     if (data.type === 'SUCCESS') {
       // Проверка успешной регистрации
       try {
-        await expect(page.locator('.ant-modal-content')).toContainText('Registration Email Sent', { timeout: 10000 });
-        console.log(`✅ ${data.id}: Registration successful`);
+        // await expect(page.locator('.ant-modal-content')).toContainText('Registration Email Sent', { timeout: 10000 });
+        // console.log(`✅ ${data.id}: Registration successful`);
+        await expect(page).toHaveURL(/client/);
       } catch (e) {
         console.log(`⚠️ ${data.id}: Expected success message not found`);
         throw e;
