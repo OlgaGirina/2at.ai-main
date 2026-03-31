@@ -1,36 +1,42 @@
-// pages/NavigationPage.ts
-import { Page } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class NavigationPage {
-  readonly page: Page;
+export class NavigationPage extends BasePage {
+  // Нам не нужно объявлять readonly page: Page, так как это уже есть в BasePage
 
-  constructor(page: Page) {
-    this.page = page;
+  constructor(page: any) {
+    super(page); // Передаем page "родителю"
   }
+
   // --- AUTH ---
   async goToLogin() {
-    await this.page.goto('/auth/login', { waitUntil: 'domcontentloaded' });
+    await this.navigateTo('/auth/login');
   }
+
   // --- REG ---
   async goToRerForm() {
-    await this.page.goto('/auth/registerForm?partnership=client', { waitUntil: 'domcontentloaded' });
+    await this.navigateTo('/auth/registerForm?partnership=client');
   }
+
   // --- CLIENT PAGES ---
   async goToClientProfile(id: string) {
-    await this.page.goto(`/client/${id}/profile`);
+    await this.navigateTo(`/client/${id}/profile`);
   }
+
   // --- PROVIDER PAGES ---
   async goToProviderProfile(id: string) {
-    await this.page.goto(`/provider/${id}/profile`);
+    await this.navigateTo(`/provider/${id}/profile`);
   }
+
   async goToLoginModal() {
-    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+    await this.navigateTo('/');
   }
+
   // --- REG ---
   async goToRerFormModal() {
-    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+    await this.navigateTo('/');
   }
+
   async goToProviderCaseProfile(id: string, case_id: string) {
-    await this.page.goto(`/provider/${id}/${case_id}`);
+    await this.navigateTo(`/provider/${id}/${case_id}`);
   }
 }

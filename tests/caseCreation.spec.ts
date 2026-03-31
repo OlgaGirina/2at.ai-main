@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { NavigationPage } from '../pages/NavigationPage';
+import { PageManager } from '../pages/PageMamager';
 import { generateRandomPassword } from '../utils/randomData';
 
 const email = process.env.PROVIDER_EMAIL!;
@@ -9,11 +9,12 @@ if (!email || !password) {
 }
 test.describe('PROVIDER PROFILE TESTS', () => {
     test.beforeEach(async ({ page }) => {
-        const navigation = new NavigationPage(page);
-        await navigation.goToProviderCaseProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512', '086298e3-9c5c-4634-bba1-6598e39233d3');
+
+        const pm = new PageManager(page);
+        await pm.onCaseCreationTo().goToProviderCaseProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512', '086298e3-9c5c-4634-bba1-6598e39233d3');
     }
     )
-    test('CASECREATION-01 | Cannot update email to already registered one', async ({ page }) => {
+    test('CASECREATION-01 | Case creation and deletion', async ({ page }) => {
         const randomMessage = `CaseTest_${generateRandomPassword(12)}`;
         const randomMessage1 = `CaseTestText_${generateRandomPassword(12)}`;
         await page.getByRole('button', { name: 'Add case' }).click();

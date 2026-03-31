@@ -1,27 +1,27 @@
-import { Page, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class LoginPage {
-  readonly page: Page;
+export class LoginPage extends BasePage {
   readonly emailInput;
   readonly passwordInput;
   readonly signInButton;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.emailInput = page.getByPlaceholder('Enter email');
-    this.passwordInput = page.getByPlaceholder('Enter password');
-    this.signInButton = page.getByRole('button', { name: 'Sign in' });
+  constructor(page: any) {
+    super(page); // Вызывает конструктор BasePage и передает туда page
+    this.emailInput = this.page.getByPlaceholder('Enter email');
+    this.passwordInput = this.page.getByPlaceholder('Enter password');
+    this.signInButton = this.page.getByRole('button', { name: 'Sign in' });
   }
 
   async login(email: string, password: string) {
-
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.signInButton.click();
 
-    // ожидаем переход после логина
-   await this.page.waitForURL(/(client|provider)\/[a-zA-Z0-9-]+\//, { timeout: 10000 });
+    // Ожидаем переход после логина
+    await this.page.waitForURL(/(client|provider)\/[a-zA-Z0-9-]+\//, { timeout: 10000 });
   }
+
   async assertLoginFailed() {
     const error = this.page.locator('.ant-form-item-explain-error');
     await expect(error).toBeVisible();

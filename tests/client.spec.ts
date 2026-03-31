@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 //import { LoginPage } from '../pages/LoginPage';
+import { PageManager } from '../pages/PageMamager';
 import { NavigationPage } from '../pages/NavigationPage';
 
 const email = process.env.CLIENT_EMAIL!;
@@ -11,10 +12,10 @@ if (!email || !password) {
 }
 test.describe('CLIENT PROFILE TESTS', () => {
   test.beforeEach(async ({ page }) => {
-    const navigation = new NavigationPage(page);
-
+    // const navigation = new NavigationPage(page);
+    const pm = new PageManager(page);
     // идём сразу в профиль
-    await navigation.goToClientProfile('105')
+    await pm.onNavigateTo().goToClientProfile('105')
     await expect(page).toHaveURL(/profile/);
     // await page.goto(CLIENT.profileUrl, { waitUntil: 'domcontentloaded' });
     // await page.goto('https://2at.ai/client/profile/105');

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { NavigationPage } from '../pages/NavigationPage';
+import { PageManager } from '../pages/PageMamager';
 
 // 🔹 Все тестовые данные
 const loginCases = [
@@ -94,9 +94,8 @@ const loginCases = [
 for (const data of loginCases) {
   test(`${data.id} | ${data.title}`, async ({ page }) => {
     console.log(`▶️ ${data.id}: ${data.title}`);
-    const navigation = new NavigationPage(page);
-    await navigation.goToLoginModal();
-
+    const pm = new PageManager(page);
+    await pm.onNavigateTo().goToLoginModal();
 
     await page.waitForSelector('#cookie_apply1', { state: 'visible' });
     await page.click('#cookie_apply1');

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { NavigationPage } from '../pages/NavigationPage';
+import { PageManager } from '../pages/PageMamager';
 
 // 🔹 Тестовые данные для регистрации клиента
 const registerCases = [
@@ -105,8 +106,9 @@ const registerCases = [
 for (const data of registerCases) {
   test(`${data.id} | ${data.title}`, async ({ page }) => {
     console.log(`▶️ ${data.id}: ${data.title}`);
-    const navigation = new NavigationPage(page);
-    await navigation.goToRerFormModal();
+    // const navigation = new NavigationPage(page);
+    const pm = new PageManager(page);
+    await pm.onNavigateTo().goToRerFormModal();
     // Закрытие попапа  уведомляющего о куках
     await page.waitForSelector('#cookie_apply1', { state: 'visible' });
     await page.click('#cookie_apply1');

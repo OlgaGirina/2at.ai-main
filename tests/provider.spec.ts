@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { NavigationPage } from '../pages/NavigationPage';
+import { PageManager } from '../pages/PageMamager';
 import { generateRandomPassword } from '../utils/randomData';
 
 const email = process.env.PROVIDER_EMAIL!;
@@ -11,8 +12,9 @@ if (!email || !password) {
 }
 test.describe('PROVIDER PROFILE TESTS', () => {
   test.beforeEach(async ({ page }) => {
-    const navigation = new NavigationPage(page);
-    await navigation.goToProviderProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512')
+    // const navigation = new NavigationPage(page);
+    const pm = new PageManager(page);
+    await pm.onNavigateTo().goToProviderProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512')
   });
 
   test('PROVIDER-01 | Cannot update email to already registered one', async ({ page }) => {
