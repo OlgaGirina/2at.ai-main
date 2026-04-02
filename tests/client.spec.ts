@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
-//import { LoginPage } from '../pages/LoginPage';
 import { PageManager } from '../pages/PageMamager';
-import { NavigationPage } from '../pages/NavigationPage';
 
 const email = process.env.CLIENT_EMAIL!;
 const password = process.env.CLIENT_PASSWORD!;
@@ -10,6 +8,7 @@ const existingEmail = process.env.EXISTING_EMAIL!;
 if (!email || !password) {
   throw new Error('Missing CLIENT_EMAIL or CLIENT_PASSWORD in .env');
 }
+
 test.describe('CLIENT PROFILE TESTS', () => {
   test.beforeEach(async ({ page }) => {
     // const navigation = new NavigationPage(page);
@@ -55,6 +54,7 @@ test.describe('CLIENT PROFILE TESTS', () => {
     await expect(error).toContainText(/Please enter your current password/i);
 
   });
+
   test('CLIENT-04 | Error when incorrect current password entered', async ({ page }) => {
     // await page.getByRole('button', { name: 'Close' }).click();
     await page.getByRole('button', { name: 'Update' }).click();

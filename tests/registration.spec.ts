@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { NavigationPage } from '../pages/NavigationPage';
 import { PageManager } from '../pages/PageMamager';
 
 // 🔹 Тестовые данные для регистрации клиента

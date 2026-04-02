@@ -1,9 +1,10 @@
+import { Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class NavigationPage extends BasePage {
   // Нам не нужно объявлять readonly page: Page, так как это уже есть в BasePage
 
-  constructor(page: any) {
+  constructor(page: Page) {
     super(page); // Передаем page "родителю"
   }
 

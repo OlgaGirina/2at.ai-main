@@ -13,6 +13,8 @@ setup('Authenticate and save state', async ({ page }) => {
     /\/provider\/[0-9a-f-]{36}\/[0-9a-f-]{36}/,
     { timeout: 10000 }
   );
+  await expect(page).toHaveURL(/\/provider\//);
+
   await page.context().storageState({
     path: 'authProvider.json'
   });

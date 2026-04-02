@@ -1,5 +1,4 @@
 import { test as setup, expect } from '@playwright/test';
-import { TIMEOUT } from 'dns';
 
 setup('Authenticate and save state', async ({ page }) => {
   // 1️⃣ Открываем страницу логина

@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { NavigationPage } from '../pages/NavigationPage';
 import { PageManager } from '../pages/PageMamager';
 import { generateRandomPassword } from '../utils/randomData';
 
@@ -10,6 +9,7 @@ const existingEmail = process.env.EXISTING_EMAIL!;
 if (!email || !password) {
   throw new Error('Missing PROVIDER_EMAIL or PROVIDER_PASSWORD in .env');
 }
+
 test.describe('PROVIDER PROFILE TESTS', () => {
   test.beforeEach(async ({ page }) => {
     // const navigation = new NavigationPage(page);
@@ -32,13 +32,13 @@ test.describe('PROVIDER PROFILE TESTS', () => {
     await expect(error).toContainText(/This email is already registered. Please use another one./i);
 
   });
+
   test('PROVIDER-02 | Warning when changing email without current password', async ({ page }) => {
     const randomEmail = `test_${Date.now()}@mail.com`;
     await page.getByRole('button', { name: 'Update' }).click();
     const modal = page.locator('.ant-modal-content');
     await modal.getByPlaceholder('Enter login').fill(randomEmail);
     await modal.getByPlaceholder('Required when changing password or login').fill('');
-
     await modal.getByRole('button', { name: 'Change' }).click();
     const error = modal.locator('#oldPswd_help .ant-form-item-explain-error');
     await expect(error).toContainText(/Please enter your current password/i);
