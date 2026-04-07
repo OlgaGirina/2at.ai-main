@@ -1,32 +1,31 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { PageManager } from '../pages/PageMamager';
 
-// 🔹 Тестовые данные для регистрации клиента
-const registerCases = [
+// 1. Данные для успешной регистрации
+const registerCases_success = [
   {
     id: 'REG-01-01',
     title: 'Valid Client Registration',
-    type: 'SUCCESS',
     company: 'AutoClient_' + Date.now(),
     email: `autotest_${Date.now()}@mailinator.com`,
     password: 'ValidPass123',
     confirmPassword: 'ValidPass123',
   },
-  /* {
-     id: 'REG-01-02',
-     title: 'Invalid Client Registration - Empty Fields',
-     type: 'FIELD_ERROR',
-     company: '',
-     email: '',
-     password: '',
-     confirmPassword: '',
-     selector: '#email_help .ant-form-item-explain-error',
-     expectedTexts: ["Please input your email!"]
-   },*/
+  {
+    id: 'REG-01-08',
+    title: 'Client Registration - Existing Email',
+    company: 'NewCompany_' + Date.now(),
+    email: 'olik255@rambler.ru',
+    password: 'ValidPass123',
+    confirmPassword: 'ValidPass123',
+  }
+];
+
+// 2. Данные для ошибок валидации
+const registerCases_fieldError = [
   {
     id: 'REG-01-03',
-    title: 'Invalid Client Registration - Wrong Email Format',
-    type: 'FIELD_ERROR',
+    title: 'Wrong Email Format',
     company: 'TestCompany_' + Date.now(),
     email: 'abc123',
     password: 'ValidPass123',
@@ -36,8 +35,7 @@ const registerCases = [
   },
   {
     id: 'REG-01-04',
-    title: 'Invalid Client Registration - Short Password',
-    type: 'FIELD_ERROR',
+    title: 'Short Password',
     company: 'TestCompany_' + Date.now(),
     email: `shortpass_${Date.now()}@mailinator.com`,
     password: 'short7',
@@ -69,25 +67,13 @@ const registerCases = [
   },
   {
     id: 'REG-01-07',
-    title: 'Invalid Client Registration - Passwords Do Not Match',
-    type: 'FIELD_ERROR',
+    title: 'Passwords Do Not Match',
     company: 'TestCompany_' + Date.now(),
     email: `mismatch_${Date.now()}@mailinator.com`,
     password: 'ValidPass123',
     confirmPassword: 'WrongPass123',
     selector: '#confirmPassword_help .ant-form-item-explain-error',
     expectedTexts: ['Passwords do not match!']
-  },
-  {
-    id: 'REG-01-08',
-    title: 'Client Registration(Autorisation) - Existing Email',
-    type: 'SUCCESS',
-    company: 'NewCompany_' + Date.now(),
-    email: 'olik255@rambler.ru', // существующий email
-    password: 'ValidPass123',
-    confirmPassword: 'ValidPass123',
-    selector: '.ant-form-item-explain-error',
-    // expectedTexts: ['User already exists. Please use the Sign In form']
   },
   {
     id: 'REG-01-09',
@@ -101,76 +87,63 @@ const registerCases = [
     expectedTexts: ['Please input a valid email!']
   }
 ];
-// 🔹 Цикл по кейсам
-for (const data of registerCases) {
-  test(`${data.id} | ${data.title}`, async ({ page }) => {
-    console.log(`▶️ ${data.id}: ${data.title}`);
-    // const navigation = new NavigationPage(page);
+
+interface RegistrationData {
+  company: string;
+  email: string;
+  password: string;         // знак вопроса значит, что поле необязательное
+  confirmPassword: string;
+  selector?: string;
+  expectedTexts?: string[];
+}
+
+// Общая функция для заполнения формы (выносим повторения)
+async function fillRegistrationForm(page: Page, data: RegistrationData) {
+  const frame = page.frameLocator('#auth-iframe');
+  await page.locator('#cookie_apply1').click();
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await frame.getByRole('button', { name: 'Join Us' }).click();
+
+  const companyInput = frame.getByRole('textbox', { name: /company name/i });
+  await companyInput.click();
+  await companyInput.pressSequentially(data.company, { delay: 50 });
+  await companyInput.blur();
+  await frame.getByRole('checkbox').click();
+  await frame.getByRole('button', { name: 'Create account' }).click();
+  await frame.getByPlaceholder('Enter email').fill(data.email);
+  await frame.getByPlaceholder('Enter password').fill(data.password);
+  await frame.getByPlaceholder('Confirm password').fill(data.confirmPassword);
+  await frame.getByRole('checkbox', { name: /I agree to Terms/ }).check();
+  await frame.getByRole('button', { name: 'Create account' }).click();
+  return frame; // возвращаем фрейм, чтобы проверять в нем ошибки
+}
+
+// 🔹 ГРУППА ТЕСТОВ: УСПЕХ
+for (const data of registerCases_success) {
+  test(`${data.id} | Success: ${data.title}`, async ({ page }) => {
     const pm = new PageManager(page);
     await pm.onNavigateTo().goToRerFormModal();
-    // Закрытие попапа  уведомляющего о куках
-    await page.waitForSelector('#cookie_apply1', { state: 'visible' });
-    await page.click('#cookie_apply1');
-    // 1️⃣ Клик по кнопке, чтобы открыть модалку (и iframe)
-    await page.getByRole('button', { name: 'Sign in' }).click();
-    await page.waitForSelector('#auth-iframe');
-    // нажать Join Us
-    await page
-      .frameLocator('#auth-iframe')
-      .getByRole('button', { name: 'Join Us' })
-      .click();
+    await fillRegistrationForm(page, data);
 
-    const frame = page.frameLocator('#auth-iframe');
-    const companyInput = frame.getByRole('textbox', { name: /company name/i });
-
-    await companyInput.click();
-    await companyInput.pressSequentially(data.company, { delay: 50 });
-    await companyInput.blur();
-
-    // ждём, что форма раскрылась
-    await expect(frame.getByRole('checkbox')).toBeVisible({ timeout: 10000 });
-
-    // теперь чекбокс точно есть
-    await frame.getByRole('checkbox').click();
-
-    await frame.getByRole('button', { name: 'Create account' }).click();
-    await frame.getByPlaceholder('Enter email').fill(data.email);
-
-    if (data.password !== undefined)
-      await frame.getByPlaceholder('Enter password').fill(data.password);
-
-    if (data.confirmPassword !== undefined)
-      await frame.getByPlaceholder('Confirm password').fill(data.confirmPassword);
-
-    // Активировать чек-бокс
-    await frame.getByRole('checkbox', { name: 'I agree to Terms of Use and' }).check();
-
-    // Нажать Create account
-    await frame.getByRole('button', { name: 'Create account' }).click();
-
-    if (data.type === 'SUCCESS') {
-      // Проверка успешной регистрации
-      try {
-        // await expect(page.locator('.ant-modal-content')).toContainText('Registration Email Sent', { timeout: 10000 });
-        // console.log(`✅ ${data.id}: Registration successful`);
-        await expect(page).toHaveURL(/client/);
-      } catch (e) {
-        console.log(`⚠️ ${data.id}: Expected success message not found`);
-        throw e;
-      }
-    } else if (data.type === 'FIELD_ERROR') {
-      // Проверка ошибок валидации
-      for (const text of data.expectedTexts ?? 'Incorrect email or password') {
-        const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error').first();
-        await expect(errorLocator).toContainText(text, { timeout: 5000 });
-        //await expect(errorLocator).toHaveText(text); 
-
-        console.log(`⚠️ ${data.id}: Error message displayed — "${text}"`);
-      }
-    }
+    // Прямая проверка без условий
+    await expect(page).toHaveURL(/client/);
+    console.log(`✅ ${data.id}: Success URL reached`);
   });
 }
 
+// 🔹 ГРУППА ТЕСТОВ: ОШИБКИ ПОЛЕЙ
+for (const data of registerCases_fieldError) {
+  test(`${data.id} | Error: ${data.title}`, async ({ page }) => {
+    const pm = new PageManager(page);
+    await pm.onNavigateTo().goToRerFormModal();
+    const frame = await fillRegistrationForm(page, data);
 
-
-
+    // Прямая проверка ошибок
+    const errorSelector = data.selector || '#email_help .ant-form-item-explain-error';
+    const texts = data.expectedTexts || ['Incorrect email or password'];
+    for (const text of texts) {
+      await expect(frame.locator(errorSelector).first()).toContainText(text);
+      console.log(`⚠️ ${data.id}: Expected error found — "${text}"`);
+    }
+  });
+}

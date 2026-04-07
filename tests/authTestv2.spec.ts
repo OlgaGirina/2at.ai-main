@@ -1,22 +1,23 @@
 import { test, expect } from '@playwright/test';
 import { PageManager } from '../pages/PageMamager';
+import { Page } from '@playwright/test';
 
 // 🔹 Все тестовые данные
-const loginCases = [
-  {
-    id: 'AUTH-TC-01',
-    title: 'Valid login with Client account',
-    email: 'Client241020252@gmail.com',
-    password: 'qwerty123',
-    type: 'SUCCESS_CLIENT'
-  },
-  {
-    id: 'AUTH-TC-02',
-    title: 'Valid login with Provider account',
-    email: 'Provider24102025@gmail.com',
-    password: 'qwerty123',
-    type: 'SUCCESS_PROVIDER'
-  },
+const loginCases_SUCCESS_CLIENT = [{
+  id: 'AUTH-TC-01',
+  title: 'Valid login with Client account',
+  email: 'Client241020252@gmail.com',
+  password: 'qwerty123',
+  type: 'SUCCESS_CLIENT'
+}];
+const loginCases_SUCCESS_PROVIDER = [{
+  id: 'AUTH-TC-02',
+  title: 'Valid login with Provider account',
+  email: 'Provider24102025@gmail.com',
+  password: 'qwerty123',
+  type: 'SUCCESS_PROVIDER'
+}];
+const loginCases_FIELD_ERROR = [
   {
     id: 'AUTH-TC-03',
     title: 'Login with incorrect email format',
@@ -91,76 +92,50 @@ const loginCases = [
   },
 ];
 
-for (const data of loginCases) {
+// 2️⃣ ОБЩАЯ ФУНКЦИЯ ДЛЯ ВХОДА (Чтобы не писать это 3 раза)
+async function loginAction(page: Page, email: string, password: string) {
+  const cookieButton = page.locator('#cookie_apply1');
+  if (await cookieButton.isVisible()) await cookieButton.click();
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  const frame = page.frameLocator('#auth-iframe');
+  await frame.locator('input[placeholder="Enter email"]').fill(email);
+  await frame.locator('input[placeholder="Enter password"]').fill(password);
+  await frame.locator('input[type="password"]').press('Enter');
+
+  return frame; // возвращаем фрейм, если он понадобится для проверки ошибок
+}
+
+for (const data of loginCases_FIELD_ERROR) {
   test(`${data.id} | ${data.title}`, async ({ page }) => {
     console.log(`▶️ ${data.id}: ${data.title}`);
     const pm = new PageManager(page);
     await pm.onNavigateTo().goToLoginModal();
-
-    await page.waitForSelector('#cookie_apply1', { state: 'visible' });
-    await page.click('#cookie_apply1');
-
-    // 1️⃣ Клик по кнопке, чтобы открыть модалку (и iframe)
-    await page.getByRole('button', { name: 'Sign in' }).click();
-
-    // 2️⃣ Ждём появления iframe
-    const frame = page.frameLocator('#auth-iframe');
-
-    // 3️⃣ Заполняем поля ВНУТРИ iframe
-    await frame.locator('input[placeholder="Enter email"]').fill(data.email);
-    await frame.locator('input[placeholder="Enter password"]').fill(data.password);
-
-    // 4️⃣ Кликаем на Sign in внутри iframe
-    // await frame.getByRole('button', { name: 'Sign in' }).click();
-
-    // 4️⃣ Кликаем Enter после пароля ВНУТРИ iframe
-    await frame.locator('input[type="password"]').press('Enter');
-
-    /*   // Вводим данные
-       await page.getByPlaceholder('Enter email').fill(data.email);
-       await page.getByPlaceholder('Enter password').fill(data.password);
-   
-       // Кликаем Sign in
-       await page.getByRole('button', { name: 'Sign in' }).click();
-   */
-    // Проверка по типу сценария
-    if (data.type === 'SUCCESS_CLIENT') {
-      try {
-        await expect(page.locator('.name')).toBeVisible({ timeout: 10000 });
-        console.log(`✅ ${data.id}: Client login success`);
-      } catch {
-        await expect(frame.locator('#email_help .ant-form-item-explain-error'))
-          .toContainText('Incorrect email or password');
-        console.log(`⚠️ ${data.id}: Login failed — incorrect credentials`);
-      }
-
-    } else if (data.type === 'SUCCESS_PROVIDER') {
-      try {
-        await expect(page.locator('.name')).toBeVisible({ timeout: 8000 });
-        console.log(`✅ ${data.id}: Provider login success`);
-      } catch {
-        const fieldError = frame.locator('#email_help .ant-form-item-explain-error');
-        const popupError = frame.locator('.auth-modal-frame');
-        // Ждем, пока появится ХОТЯ БЫ один из этих элементов
-        await expect(fieldError.or(popupError)).toBeVisible({ timeout: 5000 });
-        // Проверяем, какой именно текст мы получили
-        if (await fieldError.isVisible()) {
-          await expect(fieldError).toContainText('Incorrect email or password');
-        } else {
-          await expect(popupError).toContainText('Incorrect Login Role');
-          console.log(`Check domain`);
-        }
-
-        /* await expect(frame.locator('#email_help .ant-form-item-explain-error'))
-           .toContainText('Incorrect email or password');
-         console.log(`⚠️ ${data.id}: Provider login failed`);*/
-      }
-    } else if (data.type === 'FIELD_ERROR') {
-      const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error');
-      const expectedText = data.expectedText ?? 'Incorrect email or password';
-      await expect(errorLocator).toContainText(expectedText);
-      console.log(`⚠️ ${data.id}: Error message displayed — "${expectedText}"`);
-    }
+    const frame = await loginAction(page, data.email, data.password);
+    const errorLocator = frame.locator(data.selector ?? '#email_help .ant-form-item-explain-error');
+    const expectedText = data.expectedText ?? 'Incorrect email or password';
+    await expect(errorLocator).toContainText(expectedText);
+    console.log(`⚠️ ${data.id}: Error message displayed — "${expectedText}"`);
   }
-  );
+  )
+}
+// Группа 2: Успешный провайдер
+for (const data of loginCases_SUCCESS_PROVIDER) {
+  test(`${data.id} | ${data.title}`, async ({ page }) => {
+    const pm = new PageManager(page);
+    await pm.onNavigateTo().goToLoginModal();
+    await loginAction(page, data.email, data.password);
+    await expect(page.locator('.name')).toBeVisible({ timeout: 10000 });
+    console.log(`✅ ${data.id}: Provider login success`);
+  });
+}
+// Группа 1: Успешный клиент
+for (const data of loginCases_SUCCESS_CLIENT) {
+  test(`${data.id} | ${data.title}`, async ({ page }) => {
+    const pm = new PageManager(page);
+    await pm.onNavigateTo().goToLoginModal();
+    await loginAction(page, data.email, data.password);
+    // Прямая проверка успеха без всяких try/catch
+    await expect(page.locator('.name')).toBeVisible({ timeout: 10000 });
+    console.log(`✅ ${data.id}: Client login success`);
+  });
 }

@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { test as setup, expect } from '@playwright/test';
 
 setup('Authenticate and save state', async ({ page }) => {
