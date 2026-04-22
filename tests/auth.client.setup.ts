@@ -4,7 +4,7 @@ import { test as setup, expect } from '@playwright/test';
 setup('Authenticate and save state', async ({ page }) => {
   // 1️⃣ Открываем страницу логина
   await page.goto('/auth/', { timeout: 10000 });
-  // 2️⃣ Вводим данные из .env
+  // 2️⃣ Вводим данные из .envche
   await page.getByPlaceholder('Enter email')
     .fill(process.env.CLIENT_EMAIL!);
 

@@ -11,5 +11,6 @@ node_modules/
 authClient.json
 authProvider.json
 authState.json
+playwright_optimizations.md
 
 

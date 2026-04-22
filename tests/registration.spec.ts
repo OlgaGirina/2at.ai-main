@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { PageManager } from '../pages/PageMamager';
+import { PageManager } from '../pages/PageManager';
 
 // 1. Данные для успешной регистрации
 const registerCases_success = [

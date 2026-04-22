@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { PageManager } from '../pages/PageMamager';
+import { PageManager } from '../pages/PageManager';
 import { generateRandomPassword } from '../utils/randomData';
 
 const email = process.env.PROVIDER_EMAIL!;

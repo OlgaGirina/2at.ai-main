@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { PageManager } from '../pages/PageMamager';
+import { PageManager } from '../pages/PageManager';
 
 const email = process.env.CLIENT_EMAIL!;
 const password = process.env.CLIENT_PASSWORD!;
