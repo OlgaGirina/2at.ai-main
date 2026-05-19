@@ -5,6 +5,7 @@ import { generateRandomPassword } from '../utils/randomData';
 const email = process.env.PROVIDER_EMAIL!;
 const password = process.env.PROVIDER_PASSWORD!;
 const existingEmail = process.env.EXISTING_EMAIL!;
+const providerProfileId = process.env.PROVIDER_PROFILE_ID!;
 
 if (!email || !password) {
   throw new Error('Missing PROVIDER_EMAIL or PROVIDER_PASSWORD in .env');
@@ -14,7 +15,7 @@ test.describe('PROVIDER PROFILE TESTS', () => {
   test.beforeEach(async ({ page }) => {
     // const navigation = new NavigationPage(page);
     const pm = new PageManager(page);
-    await pm.onNavigateTo().goToProviderProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512')
+    await pm.onNavigateTo().goToProviderProfile(providerProfileId);
   });
 
   test('PROVIDER-01 | Cannot update email to already registered one', async ({ page }) => {

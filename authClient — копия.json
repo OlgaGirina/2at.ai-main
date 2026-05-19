@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "https://dev.2at.ai",
+      "localStorage": [
+        {
+          "name": "accounts",
+          "value": "{\"client\":{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDbGllbnQyNDEwMjAyNTJAZ21haWwuY29tIiwidWlkIjoiNTI4NiIsInV1aWQiOiJjMzU1MmY5Ny05ZWFiLTQ2ODItOTZkMi1mNmQwOWQ0NGI2YzIiLCJiczY0IjoiUTJ4cFpXNTBNalF4TURJd01qVXlRR2R0WVdsc0xtTnZiVFV5T0Raak16VTFNbVk1TnkwNVpXRmlMVFEyT0RJdE9UWmtNaTFtTm1Rd09XUTBOR0kyWXpJPSIsImV4cCI6MTc3NzU0NTIwNn0.JfR5HvrPXV3WSYzbaH2N6LKPs-_3UOsCMnDfF52_55U\",\"role\":\"client\",\"lastUsed\":1777286006948}}"
+        }
+      ]
+    }
+  ]
+}

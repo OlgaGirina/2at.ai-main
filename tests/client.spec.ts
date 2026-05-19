@@ -4,6 +4,7 @@ import { PageManager } from '../pages/PageManager';
 const email = process.env.CLIENT_EMAIL!;
 const password = process.env.CLIENT_PASSWORD!;
 const existingEmail = process.env.EXISTING_EMAIL!;
+const clientProfileId = process.env.CLIENT_PROFILE_ID!;
 
 if (!email || !password) {
   throw new Error('Missing CLIENT_EMAIL or CLIENT_PASSWORD in .env');
@@ -14,7 +15,7 @@ test.describe('CLIENT PROFILE TESTS', () => {
     // const navigation = new NavigationPage(page);
     const pm = new PageManager(page);
     // идём сразу в профиль
-    await pm.onNavigateTo().goToClientProfile('105')
+    await pm.onNavigateTo().goToClientProfile(clientProfileId);
     await expect(page).toHaveURL(/profile/);
     // await page.goto(CLIENT.profileUrl, { waitUntil: 'domcontentloaded' });
     // await page.goto('https://2at.ai/client/profile/105');

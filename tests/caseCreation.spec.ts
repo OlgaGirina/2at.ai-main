@@ -4,6 +4,8 @@ import { generateRandomPassword } from '../utils/randomData';
 
 const email = process.env.PROVIDER_EMAIL!;
 const password = process.env.PROVIDER_PASSWORD!;
+const providerProfileId = process.env.PROVIDER_PROFILE_ID!;
+const caseProviderId = process.env.CASE_PROVIDER_ID!;
 if (!email || !password) {
     throw new Error('Missing PROVIDER_EMAIL or PROVIDER_PASSWORD in .env');
 }
@@ -12,7 +14,7 @@ test.describe('PROVIDER PROFILE TESTS', () => {
     test.beforeEach(async ({ page }) => {
 
         const pm = new PageManager(page);
-        await pm.onCaseCreationTo().goToProviderCaseProfile('5ba548b4-d64a-4ebc-a460-f63bd4649512', '086298e3-9c5c-4634-bba1-6598e39233d3');
+        await pm.onCaseCreationTo().goToProviderCaseProfile(providerProfileId, caseProviderId);
     }
     )
 
