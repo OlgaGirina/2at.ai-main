@@ -37,6 +37,9 @@ jobs:
         CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
         CLIENT_PASSWORD: ${{ secrets.CLIENT_PASSWORD }}
         EXISTING_EMAIL: ${{ secrets.EXISTING_EMAIL }}
+        CLIENT_PROFILE_ID: ${{ secrets.CLIENT_PROFILE_ID }}
+        PROVIDER_PROFILE_ID: ${{ secrets.PROVIDER_PROFILE_ID }}
+        CASE_PROVIDER_ID: ${{ secrets.CASE_PROVIDER_ID }}
       run: npx playwright test
 
     - uses: actions/upload-artifact@v7.0.1
