@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { PageManager } from '../pages/PageManager';
-
+const process = (globalThis as any).process;
 const email = process.env.CLIENT_EMAIL!;
 const password = process.env.CLIENT_PASSWORD!;
 const existingEmail = process.env.EXISTING_EMAIL!;

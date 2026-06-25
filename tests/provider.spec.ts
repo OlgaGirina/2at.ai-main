@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { PageManager } from '../pages/PageManager';
 import { generateRandomPassword } from '../utils/randomData';
-
+const process = (globalThis as any).process;
 const email = process.env.PROVIDER_EMAIL!;
 const password = process.env.PROVIDER_PASSWORD!;
 const existingEmail = process.env.EXISTING_EMAIL!;
