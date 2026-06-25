@@ -22,11 +22,11 @@ jobs:
       - uses: actions/checkout@v6.0.2
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: lts/*
+          node-version: 22
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install
       - name: Run Playwright tests
         env:
           # Логика: если выбран 'dev', берем DEV_URL, иначе PROD_URL
